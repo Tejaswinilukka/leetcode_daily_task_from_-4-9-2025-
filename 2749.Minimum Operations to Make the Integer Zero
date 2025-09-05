@@ -1,0 +1,14 @@
+//in this code we solve with out any recurression 
+//time complexity=o(1)
+//space complexity=o(1)
+class Solution {
+    public int makeTheIntegerZero(int num1, int num2) {
+        for(long i=0;i<=60;i++){
+      long tar=num1-i*num2;
+      if(tar>=i && Long.bitCount(tar)<=i){
+        return ( int) i;
+      }
+        }
+      return -1;
+    }
+}
