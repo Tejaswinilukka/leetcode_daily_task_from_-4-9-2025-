@@ -1,0 +1,57 @@
+class Solution {
+    public long minOperations(int[][] queries) {
+        /*
+        //firstly we take bruth force approche
+        //this gives time out for big numbers
+    
+        long ans=0;
+        for(int[] q: queries){
+            int l=q[0],r=q[1];
+            ans+=zerofunction(l,r);
+
+        }
+        return ans;
+
+    }
+    private long zerofunction(int l,int r){
+        List <Integer> list=new ArrayList<>();
+        for(int i=1;i<=r;i++)
+        list.add(i);
+        long b=0;
+        while(!list.isEmpty()){
+            List<Integer> next=new ArrayList<>();
+            for(int n:list){
+                if(n/4>0) next.add(n/4);
+            }
+            list=next;
+            b++;
+        }
+        return b;
+        */
+    long ans = 0;
+        for (int[] q : queries) {
+            int l = q[0], r = q[1];
+            // totalIndividualOps = sum of "division steps" needed for every number in [l..r]
+            // each operation acts on TWO numbers (reduces two division-steps), so ops = ceil(totalIndividualOps / 2)
+            ans += (getOps(r) - getOps(l - 1) + 1) / 2;
+        }
+        return ans;
+    }
+
+    private long getOps(int n) {
+        if (n <= 0) return 0;     // nothing to do for non-positive n
+        long res = 0;             // accumulate total individual division-steps for [1..n]
+        int ops = 0;              // number of divisions required for current power-block
+
+        // iterate powers of 4: 1, 4, 16, 64, ...
+        for (long pow4 = 1; pow4 <= n; pow4 *= 4) {
+            ops++;                                 // numbers in this block require 'ops' divisions
+            long start = pow4;                     // start of block = 4^k
+            long end = Math.min(n, pow4 * 4 - 1);  // end of block = min(n, 4^{k+1}-1)
+            res += (end - start + 1) * ops;        // there are (end-start+1) numbers, each needs 'ops' steps
+        }
+        return res;
+
+    }
+
+}
